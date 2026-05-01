@@ -1,0 +1,6 @@
+# Orchestrator: interactive shells only.
+_TERM_DIR="${HOME}/.config/term"
+[[ -f "${_TERM_DIR}/omzsh.zsh" ]] && source "${_TERM_DIR}/omzsh.zsh"
+[[ -f "${_TERM_DIR}/interactive.zsh" ]] && source "${_TERM_DIR}/interactive.zsh"
+[[ -f "${_TERM_DIR}/local.rc.zsh" ]] && source "${_TERM_DIR}/local.rc.zsh"
+unset _TERM_DIR

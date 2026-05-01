@@ -1,0 +1,29 @@
+# Ignore everything
+*
+
+# Whitelist specific dotfiles
+!.zshrc
+!.bashrc
+!.gitconfig
+!.ssh/config
+!.config/
+!.config/**
+
+# But re-ignore noisy stuff inside .config
+.config/chromium/
+.config/Code/
+.config/**/Cache/
+.config/**/CachedData/
+
+# Whitelist specific directories
+.bin/**
+
+# Common junk to always exclude
+node_modules/
+.cache/
+.local/
+.npm/
+__pycache__/
+*.pyc
+.nix-defexpr/
+.nix-profile/

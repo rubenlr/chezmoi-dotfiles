@@ -1,0 +1,57 @@
+[user]
+	email = ruben.licio@omniva.ee
+	name = Ruben Licio Reis
+
+[core]
+    editor = nvim  																				# or `code --wait` for VS Code, `idea --wait` for IntelliJ
+    autocrlf = input  																			# prevents line ending issues on cross-platform projects
+
+[branch]
+    sort = -committerdate  																		# shows most recently used branches first in `git branch`
+
+[pull]
+	rebase = true																				# only allow fast-forward on pull
+
+[fetch]
+	prune = true
+    pruneOnFetch = true  																		# prune during fetch operations too
+
+[rebase]
+	autoSquash = true  																			# automatically squash commits when rebasing
+    autoStash = true  																			# auto-stash/unstash when rebasing
+
+[push]
+	default = current 																			# pushes current branch to remote with same name
+    autoSetupRemote = true																		# auto-creates remote branch on first push
+
+[diff]
+    algorithm = histogram  																		# better diff performance and quality
+
+[rerere]
+    enabled = true  																			# remembers how you resolved conflicts
+
+[merge]
+    conflictstyle = diff3  																		# shows common ancestor in conflicts
+	tool = nvimdiff																				# Custom setup tool. Get more availabletools with command `git mergetool --tool-help`
+	ff = false  																					# allow merge commits (not fast-forward only)
+
+[mergetool]
+    prompt = false  																			# don't ask confirmation before opening
+    keepBackup = false  																		# don't create .orig backup files
+
+[mergetool "nvimdiff"]
+    cmd = nvim -d $LOCAL $BASE $REMOTE $MERGED -c 'wincmd w' -c 'wincmd J'						# Setup 3 way merge with vimdiff
+    trustExitCode = false 																		# Don't trust the exit code of the command
+
+[alias]    
+	co = checkout 																				# checkout a branch
+    br = branch 																				# list branches
+    ci = commit 																				# quick commit with message editor
+    amend = commit --amend --no-edit  															# quick amend without changing message
+    undo = reset --soft HEAD^  																	# undo last commit, keep changes staged
+    st = status -sb  																			# short status with branch info
+    lg = log --graph --oneline --all --decorate --no-pager   									# visual commit graph (no pager)
+    unstage = reset HEAD --																		# unstage the current file
+
+[init]
+    defaultBranch = master																		# set the default branch to master after `git init` to avoid following political correctness guidelines

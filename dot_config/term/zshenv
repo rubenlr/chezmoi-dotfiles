@@ -1,0 +1,12 @@
+# Orchestrator: all zsh invocations — order matters.
+[[ -f "$HOME/.cargo/env" ]] && . "$HOME/.cargo/env"
+[ -f "$HOME/.env" ] && source "$HOME/.env"
+
+export NODE_ENV=development
+
+_TERM_DIR="${HOME}/.config/term"
+[[ -f "${_TERM_DIR}/tools.zsh" ]] && source "${_TERM_DIR}/tools.zsh"
+[[ -f "${_TERM_DIR}/docker.zsh" ]] && source "${_TERM_DIR}/docker.zsh"
+[[ -f "${_TERM_DIR}/paths.zsh" ]] && source "${_TERM_DIR}/paths.zsh"
+[[ -f "${_TERM_DIR}/local.env.zsh" ]] && source "${_TERM_DIR}/local.env.zsh"
+unset _TERM_DIR

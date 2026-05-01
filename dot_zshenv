@@ -1,0 +1,80 @@
+. "$HOME/.cargo/env"
+source ~/.env
+
+export NODE_ENV=development
+
+export SONARQUBE_URL=https://sonarqube.omniva.tech
+export SONARQUBE_TOKEN=$SONAR_TOKEN
+export SONARQUBE_IDE_PORT=64120
+
+##
+## HomeBrew Configuration
+################################################################################
+export HOMEBREW_PREFIX=~/.homebrew                                              # HomeBrew prefix
+export HOMEBREW_MAKE_JOBS=8                                                     # Use all cores for building when it's necessary
+export HOMEBREW_NO_INSTALL_CLEANUP=1
+export HOMEBREW_NO_ENV_HINTS=1
+export HOMEBREW_UPGRADE_GREEDY=1                                                # Upgrade all packages, include the ones that has auto update setup.
+export HOMEBREW_FORBIDDEN_FORMULAE=colima                                       # aways use rootless directories
+export HOMEBREW_CASK_OPTS="--appdir=$HOME/Applications"  # aways use rootless directories (mirrors .zshrc)
+PATH="${HOMEBREW_PREFIX}/bin:${PATH}"                                           # Add HomeBrew bin to PATH
+
+##
+## SDKMAN Configuration
+################################################################################
+export SDKMAN_DIR="$HOME/.sdkman"                                               # SDKMAN directory
+export SDKMAN_AUTO_SELFUPDATE=true                                              # SDKMAN auto self-update
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && \
+    source "$HOME/.sdkman/bin/sdkman-init.sh"                                   # Source SDKMAN init script
+
+##
+## Enable fnm
+################################################################################
+export PATH="$HOME/.local/share/fnm:$PATH"
+command -v fnm >/dev/null 2>&1 && eval "$(fnm env --shell zsh)"
+
+##
+## Testcontainers + Docker (local): align JVM with `docker context`; Ryuk uses VM-side socket
+################################################################################
+#export TESTCONTAINERS_RYUK_DISABLED=true
+#export TESTCONTAINERS_HOST_OVERRIDE=127.0.0.1
+# DOCKER_HOST: active context endpoint first (matches `docker info`), then socket scan
+# (Colima before Rancher so stale ~/.rd/docker.sock does not beat Colima).
+unset DOCKER_HOST
+if command -v docker >/dev/null 2>&1; then
+  _ctx=$(docker context show 2>/dev/null) || _ctx=
+  if [[ -n "${_ctx}" ]]; then
+    _ctx_host=$(docker context inspect "${_ctx}" -f '{{.Endpoints.docker.Host}}' 2>/dev/null) || _ctx_host=
+    if [[ -n "${_ctx_host}" ]]; then
+      export DOCKER_HOST="${_ctx_host}"
+    fi
+    unset _ctx_host
+  fi
+  unset _ctx
+fi
+if [[ -z "${DOCKER_HOST:-}" ]]; then
+  for _docker_sock in \
+    "${HOME}/.colima/default/docker.sock" \
+    "${HOME}/.rd/docker.sock" \
+    "${HOME}/.docker/run/docker.sock" \
+    "/var/run/docker.sock"
+  do
+    if [[ -S "${_docker_sock}" ]]; then
+      export DOCKER_HOST="unix://${_docker_sock}"
+      break
+    fi
+  done
+  unset _docker_sock
+fi
+# Colima/Rancher: client socket is on macOS; Ryuk must mount /var/run/docker.sock inside the Linux VM.
+# Leave unset on Linux/CI and when already using /var/run/docker.sock (Docker Desktop symlink).
+unset TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE
+if [[ "$(uname -s)" == Darwin ]] && [[ -n "${DOCKER_HOST:-}" ]]; then
+  _tc_sock="${DOCKER_HOST#unix://}"
+  if [[ -n "${_tc_sock}" && "${_tc_sock}" != "/var/run/docker.sock" ]]; then
+    export TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE=/var/run/docker.sock
+  fi
+  unset _tc_sock
+fi
+# Vertica CE under qemu needs headroom; omit locally if you use linux/amd64 via VERTICA_TEST_CONTAINER_PLATFORM.
+alias colima-start='colima start --cpu 4 --memory 3 --arch aarch64 --vm-type vz --vz-rosetta --mount-type 9p --network-address --disk 50'
