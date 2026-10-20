@@ -4,3 +4,6 @@ _TERM_DIR="${HOME}/.config/term"
 [[ -f "${_TERM_DIR}/interactive.zsh" ]] && source "${_TERM_DIR}/interactive.zsh"
 [[ -f "${_TERM_DIR}/local.rc.zsh" ]] && source "${_TERM_DIR}/local.rc.zsh"
 unset _TERM_DIR
+
+[[ -d $HOME/.local/share/fnm ]] && \
+    eval "$(fnm env --use-on-cd --version-file-strategy recursive --shell zsh)"

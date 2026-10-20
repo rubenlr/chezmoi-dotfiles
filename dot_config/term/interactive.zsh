@@ -12,6 +12,10 @@ if [[ -d "$HOME/Library/Android/sdk" ]]; then
   export PATH="$ANDROID_HOME/platform-tools:$ANDROID_HOME/emulator:$PATH"
 fi
 
+## Personal CLI scripts (~/.cli)
+################################################################################
+[[ -d "$HOME/.cli" ]] && export PATH="$HOME/.cli:$PATH"
+
 ## Modern CLI Tools
 ################################################################################
 if (( ${+commands[bat]} )); then
@@ -20,7 +24,6 @@ if (( ${+commands[bat]} )); then
 fi
 
 if (( ${+commands[eza]} )); then
-  alias ls='eza --icons'
   alias ll='eza -lh --icons --git'
   alias la='eza -lah --icons --git'
   alias lt='eza -T --icons --level=2'

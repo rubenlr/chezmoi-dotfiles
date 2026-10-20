@@ -1,10 +1,14 @@
 [user]
 	email = ruben.licio@omniva.ee
-	name = Ruben Licio Reis
+	name = ruben.licio
+
+[includeIf "gitdir:~/github/"]
+    path = ~/github/.gitconfig
 
 [core]
     editor = nvim  																				# or `code --wait` for VS Code, `idea --wait` for IntelliJ
     autocrlf = input  																			# prevents line ending issues on cross-platform projects
+	excludesFile = ~/.config/git/.gitignore
 
 [branch]
     sort = -committerdate  																		# shows most recently used branches first in `git branch`
@@ -43,8 +47,8 @@
     cmd = nvim -d $LOCAL $BASE $REMOTE $MERGED -c 'wincmd w' -c 'wincmd J'						# Setup 3 way merge with vimdiff
     trustExitCode = false 																		# Don't trust the exit code of the command
 
-[alias]    
-	co = checkout 																				# checkout a branch
+[alias]
+    co = checkout 																				# checkout a branch
     br = branch 																				# list branches
     ci = commit 																				# quick commit with message editor
     amend = commit --amend --no-edit  															# quick amend without changing message
@@ -55,3 +59,9 @@
 
 [init]
     defaultBranch = master																		# set the default branch to master after `git init` to avoid following political correctness guidelines
+
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true

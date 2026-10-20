@@ -1,5 +1,20 @@
-# Ignore everything
-*
+
+node_modules/
+dist/
+coverage/
+data/
+.scannerwork/
+playwright-report/
+test-results/
+.env
+.env.*
+bin/
+target/
+
+# ~/gitlab repos — required so hierarchical Cursor ignore does not block entire workspace
+# (`*` above ignores top-level dirs; ignoring `gitlab/` skips all descendants.)
+!gitlab/
+!gitlab/**
 
 # Whitelist specific dotfiles
 !.zshrc

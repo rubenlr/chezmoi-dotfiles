@@ -1,12 +1,125 @@
-// Zed settings
-//
-// For information on how to configure Zed, see the Zed
-// documentation: https://zed.dev/docs/configuring-zed
-//
-// To see all of Zed's default settings without changing your
-// custom settings, run `zed: open default settings` from the
-// command palette (cmd-shift-p / ctrl-shift-p)
+// Zed settings — Claude Agent (ACP) + shared MCP
+// Docs: https://zed.dev/docs/ai/external-agents
 {
+  "diff_view_style": "unified",
+  "edit_predictions": {
+    "allow_data_collection": "no",
+    "mode": "subtle",
+  },
+  "format_on_save": "on",
+  "remove_trailing_whitespace_on_save": true,
+  "ensure_final_newline_on_save": true,
+  "agent_servers": {
+    "opencode": {
+      "type": "registry"
+    },
+    "claude-acp": {
+      "default_config_options": {
+        "model": "default",
+        "effort": "medium",
+        "mode": "plan"
+      },
+      "type": "registry",
+      "env": {
+        "CLAUDE_CODE_EXECUTABLE": "/Users/ruben.licio/.local/bin/claude",
+      },
+    },
+    "cursor": {
+      "favorite_config_option_values": {
+        "model": ["composer-2.5[fast=false]"],
+      },
+      "type": "registry",
+    },
+  },
+  "context_servers": {
+    "knowledge-base": {
+      "url": "http://knowledge-base.post.ee:8000/mcp",
+    },
+    "GitLab-MCP": {
+      "command": "/bin/zsh",
+      "args": [
+        "-c",
+        "export HOME=\"${HOME:-$(print -r ~${USER:-${LOGNAME:-$(id -un)}})}\"; set -a; [[ -r \"$HOME/.env\" ]] && . \"$HOME/.env\"; set +a; exec npx -y @zereight/mcp-gitlab",
+      ],
+      "env": {
+        "GITLAB_API_URL": "https://gitlab.omniva.tech/api/v4/",
+        "GITLAB_READ_ONLY_MODE": "false",
+        "USE_GITLAB_WIKI": "false",
+        "USE_MILESTONE": "false",
+        "USE_PIPELINE": "false",
+        "NODE_TLS_REJECT_UNAUTHORIZED": "0",
+      },
+    },
+    "Vertica": {
+      "command": "/bin/zsh",
+      "args": [
+        "-c",
+        "export HOME=\"${HOME:-$(print -r ~${USER:-${LOGNAME:-$(id -un)}})}\"; set -a; [[ -r \"$HOME/.env\" ]] && . \"$HOME/.env\"; set +a; exec npx -y @omniva/npm-vertica-connector --profile prod",
+      ],
+      "env": {},
+    },
+    "Official Bitbucket MCP": {
+      "command": "/bin/zsh",
+      "args": [
+        "-c",
+        "export HOME=\"${HOME:-$(print -r ~${USER:-${LOGNAME:-$(id -un)}})}\"; set -a; [[ -r \"$HOME/.env\" ]] && . \"$HOME/.env\"; set +a; exec npx -y @atlassian-mcp-server/bitbucket",
+      ],
+      "env": {
+        "BITBUCKET_API_BASE_PATH": "https://bitbucket.post.ee",
+      },
+    },
+    "Sonar-Connector": {
+      "command": "sonar-connector-mcp",
+      "args": [],
+      "env": {},
+    },
+  },
+  "agent": {
+    "dock": "right",
+    "favorite_models": [],
+    "model_parameters": [],
+    "tool_permissions": {
+      "default": "allow",
+      "tools": {
+        "search_web": {
+          "default": "allow",
+          "always_allow": [{ "pattern": ".*" }],
+        },
+        "fetch": {
+          "default": "allow",
+          "always_allow": [{ "pattern": ".*" }],
+        },
+      },
+    },
+    "profiles": {
+      "write": {
+        "tools": {
+          "search_web": true,
+          "fetch": true,
+        },
+      },
+      "ask": {
+        "tools": {
+          "search_web": true,
+          "fetch": true,
+        },
+      },
+    },
+  },
+  "project_panel": {
+    "dock": "left",
+  },
+  "outline_panel": {
+    "dock": "left",
+  },
+  "collaboration_panel": {
+    "dock": "left",
+  },
+  "git_panel": {
+    "group_by": "staging",
+    "tree_view": true,
+    "dock": "left",
+  },
   "base_keymap": "Cursor",
   "ui_font_size": 16,
   "buffer_font_size": 15,

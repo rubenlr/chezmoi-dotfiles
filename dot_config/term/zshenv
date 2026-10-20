@@ -1,6 +1,3 @@
-# Orchestrator: all zsh invocations — order matters.
-[[ -f "$HOME/.cargo/env" ]] && . "$HOME/.cargo/env"
-[ -f "$HOME/.env" ] && source "$HOME/.env"
 
 export NODE_ENV=development
 
@@ -10,3 +7,6 @@ _TERM_DIR="${HOME}/.config/term"
 [[ -f "${_TERM_DIR}/paths.zsh" ]] && source "${_TERM_DIR}/paths.zsh"
 [[ -f "${_TERM_DIR}/local.env.zsh" ]] && source "${_TERM_DIR}/local.env.zsh"
 unset _TERM_DIR
+
+[[ -d $HOME/.local/share/fnm ]] && \
+    eval "$(fnm env --use-on-cd --version-file-strategy recursive --shell zsh 2>/dev/null)"

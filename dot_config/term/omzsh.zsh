@@ -22,13 +22,13 @@ plugins=(   git                                                                 
             docker                                                              # Docker
             docker-compose                                                      # Docker Compose
             terraform                                                           # Terraform
-            mvn                                                                 # Maven
+            #mvn                                                                 # Maven
             ssh-agent                                                           # SSH Agent
-            node                                                                # Node
+            #node                                                                # Node
             zsh-autosuggestions                                                 # Zsh Autosuggestions
             zsh-syntax-highlighting                                             # Zsh Syntax Highlighting
-            brew                                                                # Homebrew
-            sdkman                                                              # SDKMAN
+            #brew                                                                # Homebrew
+            #sdkman                                                              # SDKMAN
 )
 ZSH_DISABLE_COMPFIX="true"                                                      # Skip directory permission checks
 source $ZSH/oh-my-zsh.sh                                                        # Load Oh My Zsh
